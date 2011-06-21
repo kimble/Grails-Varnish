@@ -27,17 +27,22 @@ class HitMissSpec extends UnitSpec {
         HTTPBuilder http = new HTTPBuilder(varnish.baseUri)
         
         when: "we hit the url for the first time"
-        String xCache = http.get(path: "/api/eternallyCacheable") { resp -> resp.headers."X-Cache" }
+        String xCache = getXCacheHeader(http, "/api/eternallyCacheable")
         
         then: "it will not be found in cache"
         xCache == "MISS"
         
         when: "we do it again"
-        xCache = http.get(path: "/api/eternallyCacheable") { resp -> resp.headers."X-Cache" }
+        xCache = getXCacheHeader(http, "/api/eternallyCacheable")
         
         then: "it should be fetched from Varnish's cache"
         xCache == "HIT"
     }
+    
+    private String getXCacheHeader(HTTPBuilder http, String requestPath) {
+        http.get(path: requestPath) { resp -> resp.headers."X-Cache" }
+    }
+    
 }
 
 class CacheableServiceRequestToContract {
@@ -55,6 +60,7 @@ class CacheableServiceRequestToContract {
 }
 
 interface CacheableService {
-
+    
     void eternallyCacheable()
+    
 }
