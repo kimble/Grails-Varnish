@@ -24,3 +24,9 @@ log4j = {
     
     debug  'grails.app'
 }
+
+environments {
+    development {
+        varnishInstances = [ "http://localhost:20202" ]
+    }
+}

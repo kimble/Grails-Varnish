@@ -1,3 +1,5 @@
+import grails.plugins.varnish.DefaultAsyncVarnishPurger
+
 class VarnishGrailsPlugin {
 
     def version = "0.1"
@@ -14,7 +16,10 @@ class VarnishGrailsPlugin {
     def documentation = "https://github.com/kimble/Grails-Varnish"
 
     def doWithSpring = {
-        // TODO Implement runtime spring config (optional)
+        asyncVarnishPurger(DefaultAsyncVarnishPurger) { bean ->
+            bean.destroyMethod = "teardown"
+            varnishInstances = application.config.varnishInstances
+        }
     }
     
     def doWithDynamicMethods = { ctx -> }
