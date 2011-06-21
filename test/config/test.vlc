@@ -10,7 +10,7 @@ acl purge {
 }
 
 sub vcl_recv {
-    if (req.request == "PURGE") {
+    if (req.http.X-Purge == "PURGE") {
         if (!client.ip ~ purge) {
             error 405 "Not allowed.";
         }

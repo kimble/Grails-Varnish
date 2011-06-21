@@ -39,6 +39,8 @@ public class VarnishInstance {
         varnishStarter.waitFor()
         Assert.isTrue(varnishStarter.exitValue() == 0, 
             "Unexpected exit code: " + varnishStarter.exitValue() + ", " + varnishStarter.err.text)
+        
+        waitForVarnishSocket()
     }
     
     private File findVarnishTestConfiguration(File projectDirectory) {
@@ -51,6 +53,32 @@ public class VarnishInstance {
         File baseDirectory = new File(BuildSettingsHolder.settings.baseDir.toString())
         Assert.isTrue(baseDirectory.exists(), "Unable to get project directory")
         return baseDirectory
+    }
+    
+    private void waitForVarnishSocket() {
+        int timeout = 5000;
+        int interval = 100;
+        
+        while (!acceptsConnection() && timeout > 0) {
+            timeout -= interval
+        } 
+    }
+    
+    private boolean acceptsConnection() {
+        Socket testSocket
+        try {
+            testSocket = new Socket("localhost", varnishListeningPort)
+            testSocket.getOutputStream()
+            return true;
+        } catch (IOException ex) {
+            return false
+        } finally {
+            try {
+                testSocket?.close()
+            } catch (IOException ex) {
+                // Don't care
+            }
+        }
     }
 
     public void stop() {
