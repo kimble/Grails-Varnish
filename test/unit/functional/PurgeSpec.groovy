@@ -41,17 +41,23 @@ class PurgeSpec extends UnitSpec {
         HTTPBuilder http = new HTTPBuilder(varnish.baseUri)
         
         when:
-        ensurePathInCache(http, "/api/eternallyCacheable")
+        ensurePathInCache(http, "/api/eternallyCacheable", "/api/alsoCacheable")
         purge(http, "localhost", "/api/[a-zA-Z]+")
         
         then:
         getXCacheHeader(http, "/api/eternallyCacheable") == "MISS"
         getXCacheHeader(http, "/api/eternallyCacheable") == "HIT"
+        
+        and:
+        getXCacheHeader(http, "/api/alsoCacheable") == "MISS"
+        getXCacheHeader(http, "/api/alsoCacheable") == "HIT"
     }
     
-    private void ensurePathInCache(HTTPBuilder http, String path) {
-        Assert.isTrue(getXCacheHeader(http, path) == "MISS", "Object should not be in cache!")
-        Assert.isTrue(getXCacheHeader(http, path) == "HIT", "Object should be cached")
+    private void ensurePathInCache(HTTPBuilder http, String... paths) {
+        paths.each { path ->
+            Assert.isTrue(getXCacheHeader(http, path) == "MISS", "Object should not be in cache!")
+            Assert.isTrue(getXCacheHeader(http, path) == "HIT", "Object should be cached")
+        }
     }
     
     private String getXCacheHeader(HTTPBuilder http, String requestPath) {

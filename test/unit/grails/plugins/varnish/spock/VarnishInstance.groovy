@@ -56,11 +56,13 @@ public class VarnishInstance {
     }
     
     private void waitForVarnishSocket() {
-        int timeout = 5000;
-        int interval = 100;
+        int timeout = 5000
+        int interval = 50
         
         while (!acceptsConnection() && timeout > 0) {
             timeout -= interval
+            interval *= 1.2
+            Thread.sleep(interval)
         } 
     }
     

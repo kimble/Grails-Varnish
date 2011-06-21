@@ -17,4 +17,15 @@ class CacheableServiceRequestToContract {
         plainResponse "should be cached"
     }
     
+    @EndpointRoute("/api/alsoCacheable")
+    def alsoCacheable = {
+        contract.alsoCacheable()
+        
+        setHeaders {
+            expires = "Thu, 24 Dec 2030 16:00:00 GMT"
+        }
+        
+        plainResponse "should also be cached"
+    }
+    
 }
