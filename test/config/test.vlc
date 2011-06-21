@@ -20,6 +20,12 @@ sub vcl_recv {
     }
 }
 
+sub vcl_fetch {
+    if (req.url ~ "^/shopping") {
+        set beresp.do_esi = true;
+    }
+}
+
 # Appends a debug header so we can see if an object
 # has been served from cache or backend
 sub vcl_deliver {

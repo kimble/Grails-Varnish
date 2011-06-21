@@ -1,4 +1,4 @@
-package functional.httpservice;
+package functional.httpservice.cacheable;
 
 public interface CacheableService {
 

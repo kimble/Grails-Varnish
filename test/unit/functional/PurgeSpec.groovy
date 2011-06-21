@@ -8,8 +8,8 @@ import org.springframework.util.Assert
 import spock.extension.httpdmock.HttpServerCfg
 import spock.extension.httpdmock.HttpTestServer
 import spock.extension.httpdmock.RequestToContract
-import functional.httpservice.CacheableService
-import functional.httpservice.CacheableServiceRequestToContract
+import functional.httpservice.cacheable.CacheableService;
+import functional.httpservice.cacheable.CacheableServiceRequestToContract;
 import grails.plugin.spock.UnitSpec
 import grails.plugins.varnish.spock.VarnishConfiguration
 import grails.plugins.varnish.spock.VarnishInstance
