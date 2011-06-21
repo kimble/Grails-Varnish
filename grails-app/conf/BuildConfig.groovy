@@ -14,24 +14,27 @@ grails.project.dependency.resolution = {
         grailsHome()
         grailsCentral()
 
-        // uncomment the below to enable remote dependency resolution
-        // from public Maven repositories
         mavenLocal()
         mavenCentral()
+        mavenRepo "http://repository.codehaus.org"
+        
         //mavenRepo "http://snapshots.repository.codehaus.org"
-        //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
     }
     
     dependencies {
-        test("org.mortbay.jetty:jetty-embedded:6.1.26", "org.apache.commons:commons-exec:1.1") {
+        test("org.mortbay.jetty:jetty-embedded:6.1.26") {
             export = false
+        }
+        
+        compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.0') {
+            excludes "commons-logging", "xml-apis", "groovy"
         }
     }
     
     plugins {
-        test(":spock:0.5-groovy-1.7", ":rest:0.6") {
+        test(":spock:0.5-groovy-1.7") {
             export = false
         }
     }
