@@ -1,4 +1,4 @@
-import grails.plugins.varnish.DefaultAsyncVarnishPurger
+import grails.plugins.varnish.impl.DefaultAsyncVarnishPurger
 
 class VarnishGrailsPlugin {
 

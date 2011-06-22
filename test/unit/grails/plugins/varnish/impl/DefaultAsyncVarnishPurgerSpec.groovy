@@ -22,12 +22,13 @@ class DefaultAsyncVarnishPurgerSpec extends UnitSpec {
         
         when: "we execute the following purge request"
         Set futures = varnishPurger.purge("developer-b.com\$", "^/blog")
-        String responseBodies = futures*.get()*.getText()
+        List responseBodies = futures*.get()*.getText()
         
         then: "two method invocations are registed on the mock"
         2 * purger.purge('developer-b.com$', "^/blog")
         
         and: "the response bodies indicates that both instances has been hit"
+        responseBodies.size() == 2
         responseBodies.contains("Purged from localhost:20500")
         responseBodies.contains("Purged from localhost:20501")
     }
